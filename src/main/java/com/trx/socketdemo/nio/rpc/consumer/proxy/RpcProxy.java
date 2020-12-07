@@ -1,5 +1,7 @@
 package com.trx.socketdemo.nio.rpc.consumer.proxy;
 
+import com.trx.socketdemo.nio.myhandler.client.ByteToLongHandler;
+import com.trx.socketdemo.nio.nettyencodeordecode.MyBytetoLongDecoder;
 import com.trx.socketdemo.nio.rpc.protocol.InvokerProtocol;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -11,7 +13,6 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
-import io.netty.handler.codec.serialization.ClassResolver;
 import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
@@ -77,7 +78,10 @@ public class RpcProxy {
                                 client.pipeline().addLast("frameEncoder",new LengthFieldPrepender(4));
                                 client.pipeline().addLast("encoder",new ObjectEncoder());
                                 client.pipeline().addLast("decoder",new ObjectDecoder(Integer.MAX_VALUE, ClassResolvers.cacheDisabled(null)));
+
                                 client.pipeline().addLast("handler",consumerHandler);
+                                client.pipeline().addLast(new MyBytetoLongDecoder());
+                                client.pipeline().addLast(new ByteToLongHandler());
                             }
                         });
                 ChannelFuture future = b.connect("localhost",8080).sync();

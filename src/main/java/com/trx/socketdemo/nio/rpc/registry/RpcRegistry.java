@@ -1,6 +1,8 @@
 package com.trx.socketdemo.nio.rpc.registry;
 
 import com.sun.xml.internal.bind.api.ClassResolver;
+import com.trx.socketdemo.nio.myhandler.server.ByteToLongHandler;
+import com.trx.socketdemo.nio.nettyencodeordecode.MyBytetoLongDecoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -42,7 +44,8 @@ public class RpcRegistry {
                             client.pipeline().addLast("encoder",new ObjectEncoder());
                             client.pipeline().addLast("decoder",new ObjectDecoder(Integer.MAX_VALUE, ClassResolvers.cacheDisabled(null)));
                             client.pipeline().addLast(new RegistryHandler());
-
+                            client.pipeline().addLast(new MyBytetoLongDecoder());
+                            client.pipeline().addLast(new ByteToLongHandler());
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG,128)

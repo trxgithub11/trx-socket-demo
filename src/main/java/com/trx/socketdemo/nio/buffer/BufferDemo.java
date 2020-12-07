@@ -11,12 +11,12 @@ public class BufferDemo {
 
     public static void main(String args[]) throws Exception {
         //这用用的是文件IO处理
-        FileInputStream fin = new FileInputStream("E://test.txt");
+        FileInputStream fin = new FileInputStream("test.txt");
         //创建文件的操作管道
         FileChannel fc = fin.getChannel();
 
         //分配一个10个大小缓冲区，说白了就是分配一个10个大小的byte数组
-        ByteBuffer buffer = ByteBuffer.allocate(10);
+        ByteBuffer buffer = ByteBuffer.allocate(512);
         output("初始化", buffer);
 
         //先读一下
@@ -30,7 +30,7 @@ public class BufferDemo {
         //判断有没有可读数据
         while (buffer.remaining() > 0) {
             byte b = buffer.get();
-            // System.out.print(((char)b));
+             System.out.print(((char)b));
         }
         output("调用get()", buffer);
 
@@ -51,6 +51,7 @@ public class BufferDemo {
         System.out.print("position: " + buffer.position() + ", ");
         //锁定值，flip，数据操作范围索引只能在position - limit 之间
         System.out.println("limit: " + buffer.limit());
+        System.out.println("mark: " + buffer.mark());
         System.out.println();
     }
 }
