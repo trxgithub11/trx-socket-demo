@@ -10,7 +10,7 @@ public class BufferDemo {
     //put/get
 
     public static void main(String args[]) throws Exception {
-        //这用用的是文件IO处理
+        //这里用的是文件IO处理
         FileInputStream fin = new FileInputStream("test.txt");
         //创建文件的操作管道
         FileChannel fc = fin.getChannel();
